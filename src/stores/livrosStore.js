@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
+const baseURL = 'https://backend-livros-btws.onrender.com/api'
+
 export const useLivrosStore = defineStore('livros', {
   state: () => ({
     livros: [],
@@ -8,15 +10,15 @@ export const useLivrosStore = defineStore('livros', {
   }),
   actions: {
     async carregarLivros() {
-      const res = await axios.get('http://localhost:8000/api/livros/')
+      const res = await axios.get(`${baseURL}/livros/`)
       this.livros = res.data
     },
     async carregarAutores() {
-      const res = await axios.get('http://localhost:8000/api/autores/')
+      const res = await axios.get(`${baseURL}/autores/`)
       this.autores = res.data
     },
     async atualizarLivro(livro) {
-      await axios.put(`http://localhost:8000/api/livros/${livro.id}/`, {
+      await axios.put(`${baseURL}/livros/${livro.id}/`, {
         title: livro.title,
         publication_date: livro.publication_date,
         author: livro.author
@@ -24,7 +26,7 @@ export const useLivrosStore = defineStore('livros', {
       await this.carregarLivros()
     },
     async removerLivro(id) {
-      await axios.delete(`http://localhost:8000/api/livros/${id}/`)
+      await axios.delete(`${baseURL}/livros/${id}/`)
       await this.carregarLivros()
     }
   }
